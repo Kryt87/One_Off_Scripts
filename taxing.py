@@ -7,18 +7,18 @@ As of July 2017.
 '''
 
 # This dictionary needs to be updated with changing tax laws
-brackets = {0.105:{'low':1, 'high':14001}, 0.175:{'low':14001, 'high':48001},
-             0.300:{'low':48001, 'high':70001}, 0.330:{'low':70001, 'high':1000000}}
+brackets = {0.105:{'low':0, 'high':14000}, 0.175:{'low':14000, 'high':48000},
+             0.300:{'low':48000, 'high':70000}, 0.330:{'low':70000, 'high':1000000}}
 
 # Function for calculating tax in current tax bracket
 def current_bracket_tax(taxRate, bVal):
-    bracketMin = brackets[taxRate]['low'] - 1
+    bracketMin = brackets[taxRate]['low']
     bracketAT = (bVal - bracketMin) * taxRate
     return bracketAT
 
 # Function for calculating max tax in current tax bracket
 def other_bracket_tax(taxRate):
-    bMin = brackets[taxRate]['low'] - 1
+    bMin = brackets[taxRate]['low']
     bMax = brackets[taxRate]['high']
     bAT = (bMax - bMin) * taxRate
     return bAT
@@ -27,7 +27,7 @@ def other_bracket_tax(taxRate):
 def calc_tax(BIncome):
     totalTax = 0
     for key in sorted(brackets):
-        if BIncome in range(brackets[key]['low'], brackets[key]['high']):
+        if brackets[key]['low'] < BIncome <= brackets[key]['high']:
             totalTax += current_bracket_tax(key, BIncome)
             break
         else:
